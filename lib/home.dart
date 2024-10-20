@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!_cart.containsKey(product) && quantity <= 0) {
         return;
       }
-      _cart[product] = _cart[product] ?? 0 + quantity;
+      _cart[product] = (_cart[product] ?? 0) + quantity;
       if (_cart[product]! <= 0) {
         _cart[product] = 1;
       }
@@ -55,17 +55,24 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Home Screen', style: TextStyle(fontSize: 25)),
+              Text('Trang chủ', style: TextStyle(fontSize: 25)),
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CartScreen(
+                                  _cart, _removeFromCart, _addToCart),
+                            ));
+                      },
                       icon: Icon(
                         Icons.shopping_bag,
                         color: Colors.black,
                       )),
                   Text(
-                    "(1)",
+                    "(${_cart.isNotEmpty ? _cart.values.reduce((sum, val) => sum + val) : 0})",
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -93,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisSpacing: 10),
                         itemCount: _products.length,
                         itemBuilder: (context, index) {
-                          var _itemProduct = _products[index];
+                          final _itemProduct = _products[index];
                           return FloatingActionButton(
                               backgroundColor: Colors.transparent,
                               elevation: 0,
@@ -106,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Expanded(
                                         child: Image.asset(_itemProduct.image,
-                                            width: 600, height: 888),
+                                            width: 600,
+                                            height: 888,
+                                            fit: BoxFit.contain),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -127,18 +136,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                             height: 10,
                                           ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(formartPrice
-                                              .format(_itemProduct.price)),
-                                              IconButton(
+                                                  .format(_itemProduct.price)),
+                                              ElevatedButton(
                                                   onPressed: () {
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(_cart, _removeFromCart, _addToCart), settings: RouteSettings(
-                                                      arguments: _cart
-                                                    )));
+                                                    _addToCart(_itemProduct);
                                                   },
-                                                  icon: Icon(Icons.add_shopping_cart)),
+                                                  child: Icon(
+                                                      Icons.add_shopping_cart)),
                                             ],
                                           ),
                                         ],
