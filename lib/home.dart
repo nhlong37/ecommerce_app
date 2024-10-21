@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/Model/product.dart';
+import 'package:ecommerce_app/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'cart.dart';
@@ -105,7 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               backgroundColor: Colors.transparent,
                               elevation: 0,
                               hoverElevation: 0,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailScreen(
+                                          _itemProduct),
+                                    ));
+                              },
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -142,13 +150,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text(formartPrice
-                                                  .format(_itemProduct.price)),
+                                                  .format(_itemProduct.price), style: TextStyle(color: Color(0xffe82727), fontWeight: FontWeight.bold),),
                                               ElevatedButton(
                                                   onPressed: () {
                                                     _addToCart(_itemProduct);
                                                   },
                                                   child: Icon(
-                                                      Icons.add_shopping_cart)),
+                                                      Icons.add_shopping_cart, color: Colors.black,)),
                                             ],
                                           ),
                                         ],

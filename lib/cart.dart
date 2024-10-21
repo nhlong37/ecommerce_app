@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_app/Model/product.dart';
 import 'package:intl/intl.dart';
 
+var formartPrice = NumberFormat('#,##0 đ', 'vi');
+
 class CartScreen extends StatefulWidget {
   final Map<Product, int> cart;
   final void Function(Product) onRemoveCart;
@@ -28,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
                   var product = widget.cart.keys.elementAt(index);
                   var quantity = widget.cart.values.elementAt(index);
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                     child: CardListItem(
                       key: Key(product.id.toString()),
                       product: product,
@@ -48,16 +50,21 @@ class _CartScreenState extends State<CartScreen> {
                 }),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Tổng: ${widget.cart.entries.fold(0, (sum, entry) => sum + entry.key.price * entry.value)}',
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-          )
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.grey[200],
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Tổng: ${formartPrice.format(widget.cart.entries.fold(0, (sum, entry) => sum + entry.key.price * entry.value))}',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              )),
         ],
       ),
     );
@@ -78,31 +85,37 @@ class CardListItem extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var formartPrice = NumberFormat('#,##0 đ', 'vi');
-
     return Row(
       children: [
         Image.asset(product.image,
             width: 130, height: 130, fit: BoxFit.contain),
         Expanded(
           child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(8, 20, 20, 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(children: [
+                        Text(
+                          '${formartPrice.format(product.price)}',
+                          style: const TextStyle(color: Colors.redAccent),
+                        ),
+                        const SizedBox(width: 5),
+                        Text('x $quantity'),
+                      ])
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${formartPrice.format(product.price)}',
-                    style: const TextStyle(color: Color.fromARGB(1, 220, 20, 60)),
-                  ),
-                  const SizedBox(width: 10),
-                  Text('X $quantity'),
                   const SizedBox(width: 10),
                   Row(
                     children: [
@@ -121,10 +134,9 @@ class CardListItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text('${formartPrice.format(product.price * quantity)}'),
+                  const SizedBox(width: 20),
                   IconButton(
                     icon: const Icon(Icons.delete_forever_sharp),
-                    hoverColor: Color(Colors.red.value),
-                    
                     onPressed: () {
                       showDialog(
                         context: context,
