@@ -71,7 +71,8 @@ flutter:
     - images/8.jpg
     - images/9.jpg
     - images/10.jpg
-  #   - images/a_dot_ham.jpeg
+    - images/11.jpg
+    - images/12.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

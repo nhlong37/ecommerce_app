@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // Show product list
-    for (int i = 1; i <= 10; i++) {
+    for (int i = 1; i <= 12; i++) {
       _products.add(Product(
           id: i,
           price: i * 10000,
@@ -155,8 +155,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   onPressed: () {
                                                     _addToCart(_itemProduct);
                                                   },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Color(0xff0a70b8),
+                                                  ),
                                                   child: Icon(
-                                                      Icons.add_shopping_cart, color: Colors.black,)),
+                                                      Icons.add_shopping_cart, color: Colors.white,)),
                                             ],
                                           ),
                                         ],
